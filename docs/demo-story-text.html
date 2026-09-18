@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记忆碎片 · Demo剧情文本</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            font-family: "STSong", "SimSun", "Noto Serif CJK SC", serif;
+            color: #d4c9b5;
+            line-height: 1.9;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px 100px 40px;
+            background: linear-gradient(180deg, #1e1e1e 0%, #2a241c 100%);
+            min-height: 100vh;
+        }
+
+        /* 标题头 */
+        .title-block {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #4a3f32;
+        }
+
+        .game-title {
+            font-size: 42px;
+            color: #e8d5b0;
+            letter-spacing: 12px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .sub-title {
+            font-size: 18px;
+            color: #8b7355;
+            letter-spacing: 6px;
+        }
+
+        .doc-meta {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #6b5a45;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .doc-meta span {
+            margin: 0 12px;
+        }
+
+        /* 分隔线 */
+        .divider {
+            text-align: center;
+            margin: 50px 0;
+            color: #4a3f32;
+            font-size: 24px;
+            letter-spacing: 12px;
+        }
+
+        /* 章节标题 */
+        .chapter {
+            margin-bottom: 30px;
+        }
+
+        .chapter-title {
+            font-size: 26px;
+            color: #e8d5b0;
+            text-align: center;
+            margin-bottom: 32px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            position: relative;
+        }
+
+        .chapter-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: #8b7355;
+            margin: 14px auto 0 auto;
+        }
+
+        /* 场景描写 */
+        .scene-desc {
+            font-size: 17px;
+            color: #c4b59a;
+            text-indent: 2em;
+            margin-bottom: 20px;
+            line-height: 2.0;
+        }
+
+        .scene-desc em {
+            color: #d4a84a;
+            font-style: normal;
+        }
+
+        /* 日记/卡片内容 */
+        .letter-block {
+            background: #2a241c;
+            border: 1px solid #4a3f32;
+            border-radius: 8px;
+            padding: 28px 32px;
+            margin: 24px 40px;
+            position: relative;
+            font-size: 16px;
+            color: #c4b59a;
+        }
+
+        .letter-block::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #8b7355;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .letter-block p {
+            margin-bottom: 8px;
+        }
+
+        .letter-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .letter-block .highlight {
+            color: #d4a84a;
+            font-weight: bold;
+        }
+
+        /* 对白 */
+        .dialogue {
+            margin: 20px 0 20px 40px;
+            padding: 12px 20px;
+            border-left: 2px solid #5a4a3a;
+            font-size: 17px;
+            color: #d4c9b5;
+            line-height: 2.0;
+        }
+
+        .dialogue .speaker {
+            color: #8b7355;
+            font-weight: bold;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .dialogue .line {
+            display: block;
+        }
+
+        .dialogue .line + .line {
+            margin-top: 6px;
+        }
+
+        /* 闪回段落 */
+        .flashback {
+            margin: 28px 0;
+            padding: 20px 28px;
+            background: rgba(212, 168, 74, 0.04);
+            border: 1px solid #3a3228;
+            border-radius: 6px;
+            font-size: 17px;
+            color: #c4b59a;
+            line-height: 2.0;
+            text-indent: 2em;
+        }
+
+        /* 结局标记 */
+        .ending-mark {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid #4a3f32;
+        }
+
+        .ending-mark .chapter-end {
+            font-size: 20px;
+            color: #8b7355;
+            letter-spacing: 8px;
+        }
+
+        .ending-mark .title-end {
+            font-size: 14px;
+            color: #5a4a3a;
+            margin-top: 12px;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+        }
+
+        /* 响应式 */
+        @media (max-width: 640px) {
+            .container {
+                padding: 32px 20px 80px 20px;
+            }
+
+            .game-title {
+                font-size: 30px;
+                letter-spacing: 6px;
+            }
+
+            .letter-block {
+                margin: 20px 0;
+                padding: 20px;
+            }
+
+            .dialogue {
+                margin-left: 12px;
+                padding: 10px 16px;
+            }
+
+            .chapter-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ========== 标题 ========== -->
+        <div class="title-block">
+            <div class="game-title">《记忆碎⽚》</div>
+            <div class="sub-title">Memory Fragments</div>
+            <div class="doc-meta">
+                <span>Demo 章节</span>
+                <span>·</span>
+                <span>纯剧情文本</span>
+                <span>·</span>
+                <span>v1.0.0</span>
+            </div>
+        </div>
+
+        <!-- ========== 开场 ========== -->
+        <div class="chapter">
+            <div class="chapter-title">开场</div>
+
+            <p class="scene-desc">昏暗的老旧卧室。晨光从窗帘缝隙透进来，照在书桌上。灰尘在光线中缓缓漂浮。</p>
+
+            <p class="scene-desc">一只苍老的手，颤抖着翻开一本破旧的日记本。内页的字迹一片模糊，像被水洇过一样，什么也看不清。</p>
+
+            <p class="scene-desc">老人坐在书桌前，眼神迷茫。</p>
+
+            <div class="dialogue">
+                <span class="speaker">▼ 老人（VO）</span>
+                <span class="line">"这是我写的日记吗……字迹都看不清了……"</span>
+            </div>
+
+            <div class="dialogue">
+                <span class="speaker">▼ 老人（VO）</span>
+                <span class="line">"我的记忆……怎么也想不起来……陌生又熟悉……"</span>
+            </div>
+
+            <div class="dialogue">
+                <span class="speaker">▼ 老人（VO）</span>
+                <span class="line">"我到底……身在何处……"</span>
+            </div>
+
+            <p class="scene-desc" style="text-align:center; text-indent:0; margin-top:32px; font-size:22px; color:#e8d5b0; letter-spacing:6px;">《记忆碎片》</p>
+        </div>
+
+        <div class="divider">· · ·</div>
+
+        <!-- ========== 第一块碎片 ========== -->
+        <div class="chapter">
+            <div class="chapter-title">第一块碎片 · 生日贺卡</div>
+
+            <p class="scene-desc">老人翻开日记本，只隐约看到一行日期：<em>1977 年秋 七月廿九 晴</em>。其余的字，全部被模糊的墨迹覆盖。</p>
+
+            <p class="scene-desc">他注意到书桌上放着一张贺卡。打开，是儿子张念的字迹：</p>
+
+            <div class="letter-block">
+                <p>"父亲，生日快乐，礼物放在抽屉里了。"</p>
+            </div>
+
+            <p class="scene-desc">他低声重复着这两个词。生日？礼物？</p>
+
+            <p class="scene-desc">他打开日记——原本模糊的三个位置，字迹开始浮现：</p>
+
+            <div class="letter-block">
+                <p>明天是■■的<span class="highlight">生日</span>，我要送她一份<span class="highlight">礼物</span>。</p>
+                <p>一支放在<span class="highlight">抽屉</span>里……</p>
+            </div>
+
+            <p class="scene-desc">但他仍然想不起来，"她"是谁。</p>
+        </div>
+
+        <div class="divider">· · ·</div>
+
+        <!-- ========== 第二块碎片 ========== -->
+        <div class="chapter">
+            <div class="chapter-title">第二块碎片 · 一把旧钥匙</div>
+
+            <p class="scene-desc">老人去拉书桌的抽屉——锁住了。钥匙在哪里？</p>
+
+            <p class="scene-desc">客厅门口挂着一串钥匙。他一把一把地看。信箱钥匙、自行车钥匙、大门钥匙……没有一把能打开那个抽屉。</p>
+
+            <p class="scene-desc">他转身，眼前的房间仿佛晃动了一下。</p>
+
+            <p class="scene-desc">光线变了。房间变得明亮、整洁，金色的夕阳从窗外洒入。</p>
+
+            <p class="scene-desc" style="text-align:center; text-indent:0; color:#8b7355; letter-spacing:4px;">——他来到了几十年前。</p>
+
+            <p class="scene-desc">抽屉上插着一把钥匙。他拔出来，和楼下那把金黄色的一比——一模一样。</p>
+
+            <p class="scene-desc">就是这把。</p>
+
+            <p class="scene-desc">钥匙转动，咔嗒一声，抽屉打开了。</p>
+        </div>
+
+        <div class="divider">· · ·</div>
+
+        <!-- ========== 第三块碎片 ========== -->
+        <div class="chapter">
+            <div class="chapter-title">第三块碎片 · 一支新钢笔</div>
+
+            <p class="scene-desc">抽屉里放着一个礼物盒。</p>
+
+            <p class="scene-desc">打开，里面是一支崭新的英雄钢笔。旁边压着一张卡片。</p>
+
+            <div class="letter-block">
+                <p>"爸，您贴身带了几十年的钢笔断墨了，</p>
+                <p>我照着您旧日记里的描述，买了一支一模一样的，</p>
+                <p>希望能帮您想起些什么。"</p>
+            </div>
+
+            <p class="scene-desc">老人握着钢笔，手指轻轻摩挲笔身。</p>
+
+            <div class="dialogue">
+                <span class="speaker">▼ 老人（VO）</span>
+                <span class="line">"钢笔？……我以前的钢笔在哪里……"</span>
+            </div>
+
+            <p class="scene-desc">日记再次显现出更多文字：</p>
+
+            <div class="letter-block">
+                <p>我在供销社挑了很久，选了一样的<span class="highlight">英雄钢笔</span>，两支。</p>
+                <p><span class="highlight">笔尖</span>顺滑，<span class="highlight">写出来的字</span>干干净净……</p>
+                <p>以后我每天都用<span class="highlight">这支笔</span>，<span class="highlight">记下</span>和她有关的所有小事。</p>
+            </div>
+
+            <p class="scene-desc">他隐约感觉到——这支笔，和"她"有关。</p>
+        </div>
+
+        <div class="divider">· · ·</div>
+
+        <!-- ========== 第四块碎片 ========== -->
+        <div class="chapter">
+            <div class="chapter-title">第四块碎片 · 一张发票</div>
+
+            <p class="scene-desc">钢笔被拿起后，抽屉底部露出一张泛黄的发票。</p>
+
+            <p style="text-align:center; color:#d4a84a; font-size:18px; margin:24px 0; letter-spacing:2px;">红星供销社，1977 年 9 月。<br>英雄钢笔 × 2，￥3.60。</p>
+
+            <p class="scene-desc">日期被墨水渍遮住了具体的日子。</p>
+
+            <div class="dialogue">
+                <span class="speaker">▼ 老人</span>
+                <span class="line">"日期……是几号来着？手机上应该有……"</span>
+            </div>
+
+            <p class="scene-desc">他拿起桌上的老旧手机，打开日历。翻到1960年。</p>
+
+            <p class="scene-desc">每一月初一，都用红色标注着。</p>
+
+            <p class="scene-desc">翻到九月——9月21日，农历八月初一。</p>
+
+            <div class="dialogue">
+                <span class="speaker">▼ 老人</span>
+                <span class="line">"9月21号……0921……"</span>
+            </div>
+        </div>
+
+        <div class="divider">· · ·</div>
+
+        <!-- ========== 第五块碎片 ========== -->
+        <div class="chapter">
+            <div class="chapter-title">第五块碎片 · 泛黄的贺卡</div>
+
+            <p class="scene-desc">老人回到现在。角落里有一个布满灰尘的铁皮密码箱。</p>
+
+            <p class="scene-desc">他输入密码：0921。</p>
+
+            <p class="scene-desc">密码箱发出清脆的咔嗒声。盖子缓缓打开，金色的尘埃飘散出来。</p>
+
+            <p class="scene-desc">里面放着一张泛黄的贺卡。他展开，看到年轻时的自己的笔迹：</p>
+
+            <div class="letter-block" style="text-align:center;">
+                <p style="font-size:20px; color:#d4a84a; letter-spacing:4px;">"刘玉珍，生日快乐"</p>
+                <p style="margin-top:8px; color:#8b7355;">—— 志明</p>
+            </div>
+
+            <p class="scene-desc" style="text-align:center; text-indent:0; margin:28px 0; font-size:24px; color:#d4a84a; letter-spacing:8px;">玉珍。</p>
+
+            <p class="scene-desc">那一瞬间，日记本上最后一个模糊的位置——三个字的名字——终于清晰。</p>
+
+            <div class="letter-block">
+                <p style="text-indent:2em;">明天是<span class="highlight">玉珍</span>的生日，我要送她一份礼物。</p>
+                <p style="text-indent:2em;">我在供销社挑了很久，选了一样的英雄钢笔，两支。</p>
+                <p style="text-indent:2em;">一支放在抽屉里，一支放在用她阳历生日设置的密码箱里。</p>
+                <p style="text-indent:2em;">笔尖顺滑，写出来的字干干净净，就像<span class="highlight">玉珍</span>一样。</p>
+                <p style="text-indent:2em;">我有些害怕也有些期待，她收到礼物会是什么反应。</p>
+                <p style="text-indent:2em;">以后我每天都用这支笔，记下和<span class="highlight">玉珍</span>有关的所有小事。</p>
+            </div>
+        </div>
+
+        <div class="divider">· · ·</div>
+
+        <!-- ========== 结局 ========== -->
+        <div class="chapter">
+            <div class="chapter-title">结局</div>
+
+            <p class="scene-desc">老人颤抖的手拿着那张泛黄的贺卡。</p>
+
+            <p class="scene-desc">他低着头，看了很久很久。</p>
+
+            <p class="scene-desc">然后他抬起头。眼神不再是迷茫——他记起来了。</p>
+
+            <div class="flashback">
+                1977 年，供销社。他站在柜台前，手里拿着两支英雄钢笔。他一支一支仔细地挑，笔尖在纸上试了又试。他要送她一份最好的礼物。
+            </div>
+
+            <div class="flashback" style="border-color:#5a4a3a;">
+                他把其中一支包好，放进密码箱。另一支放在自己的书桌上。
+            </div>
+
+            <div class="flashback" style="border-color:#6b5a45;">
+                教室里，阳光明媚。他走到那个女孩面前，把礼物递给她。她回过头，笑容温暖。他永远记得那个笑容。
+            </div>
+
+            <p class="scene-desc">老人坐在窗前，夕阳洒在他的身上。密码箱打开着，贺卡放在桌上。</p>
+
+            <p class="scene-desc">他眼角有泪光，但嘴角有一丝释然的笑。</p>
+
+            <div class="dialogue">
+                <span class="speaker">▼ 老人（VO）</span>
+                <span class="line">"我记得……"</span>
+            </div>
+
+            <div class="dialogue">
+                <span class="speaker">▼ 老人（VO）</span>
+                <span class="line">"刘玉珍……"</span>
+            </div>
+
+            <p class="scene-desc" style="text-align:center; text-indent:0;">&nbsp;</p>
+            <p class="scene-desc" style="text-align:center; text-indent:0;">画面渐暗。</p>
+
+            <div class="ending-mark">
+                <div class="chapter-end">" 第一章 · 完 "</div>
+                <div class="title-end">Memory Fragments · Demo</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
